@@ -9,23 +9,42 @@ package com.acnsiq.tdd;
 
 public class MyList {
 
-	private Object[] elements = new Object[10];
-	private boolean readOnly = false;
-	private int size;
+	private static int INCREMENT_SIZE = 10;
 
-	public void add(Object element) {
-		if (!readOnly) {
-			int newSize = size + 1;
-			if (elements.length == newSize) {
-				Object[] newElements = new Object[elements.length + 10];
-				for (int i = 0; i < size; i++) {
-					newElements[i] = elements[i];
-				}
-				elements = newElements;
-			}
-			elements[size] = element;
-			size++;
+	private Object[] elements = new Object[INCREMENT_SIZE];
+	private boolean readOnly = false;
+	private int numItems = 0;
+
+	public void add(Object elementToAdd) {
+		if (readOnly) { return; }
+
+		if (shouldResize()) {
+			resize()
 		}
+
+		addToEnd(elementToAdd)
+	}
+
+	private boolean shouldResize() {
+		int newSize = numItems + 1
+		return newSize > elements.length
+	}
+
+	private void resize() {
+		Object[] newElements = new Object[elements.length + INCREMENT_SIZE];
+		copyItemsInto(newElements)
+		elements = newElements;
+	}
+
+	private void copyItemsInto(Object[] newElements) {
+		for (int i = 0; i < numItems; i++) {
+			newElements[i] = elements[i];
+		}
+	}
+
+	private void addToEnd(Object elementToAdd) {
+		elements[numItems] = element;
+		numItems++;
 	}
 
 }
